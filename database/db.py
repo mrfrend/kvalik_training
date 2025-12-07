@@ -19,7 +19,7 @@ def login(login: str, password: str):
 def get_reservations():
     with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
         query = """
-            SELECT rooms.number, categories.category_name, room_status.status_name,
+            SELECT reservation.id, rooms.number, categories.category_name, room_status.status_name,
             CONCAT_WS(' ', clients.first_name, clients.last_name, clients.middle_name) as fio,
             check_in, check_out
             FROM reservation INNER JOIN
@@ -34,3 +34,50 @@ def get_reservations():
         cur.execute(query)
         result = cur.fetchall()
         return result
+
+def get_clients_info():
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        cur.execute("SELECT first_name, last_name, middle_name, passport_series, passport_number, cause_visit FROM clients")
+        clients = cur.fetchall()
+        return clients
+
+def get_categories():
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        cur.execute("SELECT id, category_name FROM categories")
+        categories = cur.fetchall()
+        return categories
+
+def get_fio_clients():
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        cur.execute("SELECT id, CONCAT_WS(' ', first_name, last_name, middle_name) as fio FROM clients")
+        fios = cur.fetchall()
+        return fios
+
+def get_room_statuses():
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        cur.execute("SELECT id, status_name FROM room_status")
+        statuses = cur.fetchall()
+        return statuses
+
+def get_room_numbers():
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        cur.execute("SELECT id, number from rooms")
+        numbers = cur.fetchall()
+        return numbers
+
+def update_reservation(reservation_id: int, room_id: int, client_id: int, check_in: str, check_out: str):
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        cur.execute("""
+            UPDATE reservation
+            SET room_id = %s, client_id = %s, check_in = %s, check_out = %s
+            WHERE id = %s
+        """, (room_id, client_id, check_in, check_out, reservation_id))
+        connection.commit()
+
+def add_new_client(first_name: str, last_name: str, middle_name: str, passport_series: int, passport_number: int, cause_visit: str):
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        cur.execute("""INSERT INTO clients 
+                    (first_name, last_name, middle_name, passport_series, passport_number, cause_visit)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+        """, (first_name, last_name, middle_name, passport_series, passport_number, cause_visit))
+        connection.commit()

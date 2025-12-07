@@ -108,6 +108,70 @@ INSERT INTO `clients` (`id`, `first_name`, `last_name`, `middle_name`, `account_
 (17, 'Филь', 'Марина', 'Федоровна', NULL, '', '', ''),
 (18, 'Михайлов', 'Игорь', 'Вадимович', NULL, '', '', '');
 
+UPDATE `clients`
+SET
+  `passport_series` = CASE `id`
+    WHEN 1 THEN '4012'
+    WHEN 2 THEN '4098'
+    WHEN 3 THEN '3784'
+    WHEN 4 THEN '5120'
+    WHEN 5 THEN '4456'
+    WHEN 6 THEN '4971'
+    WHEN 7 THEN '4300'
+    WHEN 8 THEN '4890'
+    WHEN 9 THEN '4110'
+    WHEN 10 THEN '4765'
+    WHEN 11 THEN '4201'
+    WHEN 12 THEN '4322'
+    WHEN 13 THEN '4678'
+    WHEN 14 THEN '4533'
+    WHEN 15 THEN '4888'
+    WHEN 16 THEN '4015'
+    WHEN 17 THEN '4955'
+    WHEN 18 THEN '4220'
+  END,
+  `passport_number` = CASE `id`
+    WHEN 1 THEN '567890'
+    WHEN 2 THEN '654321'
+    WHEN 3 THEN '112233'
+    WHEN 4 THEN '998877'
+    WHEN 5 THEN '334455'
+    WHEN 6 THEN '223344'
+    WHEN 7 THEN '556677'
+    WHEN 8 THEN '778899'
+    WHEN 9 THEN '990011'
+    WHEN 10 THEN '210987'
+    WHEN 11 THEN '135790'
+    WHEN 12 THEN '246801'
+    WHEN 13 THEN '102938'
+    WHEN 14 THEN '564738'
+    WHEN 15 THEN '019283'
+    WHEN 16 THEN '192837'
+    WHEN 17 THEN '564738'
+    WHEN 18 THEN '918273'
+  END,
+  `cause_visit` = CASE `id`
+    WHEN 1 THEN 'Командировка на конференцию'
+    WHEN 2 THEN 'Плановый отпуск'
+    WHEN 3 THEN 'Деловые переговоры'
+    WHEN 4 THEN 'Медицинское обследование'
+    WHEN 5 THEN 'Семейное торжество'
+    WHEN 6 THEN 'Повышение квалификации'
+    WHEN 7 THEN 'Спортивные соревнования'
+    WHEN 8 THEN 'Туристическая поездка'
+    WHEN 9 THEN 'Служебная проверка'
+    WHEN 10 THEN 'Сопровождение делегации'
+    WHEN 11 THEN 'Работа с партнерами'
+    WHEN 12 THEN 'Подписание договора'
+    WHEN 13 THEN 'Инвестиционный форум'
+    WHEN 14 THEN 'Встреча с подрядчиками'
+    WHEN 15 THEN 'Технический аудит'
+    WHEN 16 THEN 'Выставка оборудования'
+    WHEN 17 THEN 'Контроль качества'
+    WHEN 18 THEN 'Обучающий семинар'
+  END
+WHERE `id` BETWEEN 1 AND 18;
+
 -- --------------------------------------------------------
 
 --
