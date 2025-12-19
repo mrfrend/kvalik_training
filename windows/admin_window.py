@@ -46,7 +46,7 @@ class AdminWindow(Ui_Form, QWidget):
     def on_reset_filter_click(self):
         self.check_in_date.setDate(QDate.currentDate())
         self.check_out_date.setDate(QDate.currentDate().addDays(1))
-        for row_index in range(self.tableWidget.rowCount()):
+        for row_index in range(self.tableWidget.rowCount()): # (0, 1, 2, 3, 4)
             self.tableWidget.setRowHidden(row_index, False)
     
     def on_button_click(self):

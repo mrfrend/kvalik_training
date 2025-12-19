@@ -81,3 +81,18 @@ def add_new_client(first_name: str, last_name: str, middle_name: str, passport_s
                     VALUES (%s, %s, %s, %s, %s, %s)
         """, (first_name, last_name, middle_name, passport_series, passport_number, cause_visit))
         connection.commit()
+
+def get_available_rooms(check_in_date: str, check_out_date: str):
+    with connection.cursor(cursor=pymysql.cursors.DictCursor) as cur:
+        query = """
+            SELECT floor, number, categories.category_name
+            FROM rooms
+            INNER JOIN categories ON rooms.category_id = categories.id
+            WHERE NOT EXISTS (
+                SELECT 1 FROM reservation
+                WHERE room_id = rooms.id
+                AND check_in < %s AND check_out > %s
+            )
+        """
+        cur.execute(query, (check_out_date, check_in_date))
+        return cur.fetchall()
